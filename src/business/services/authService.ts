@@ -1,4 +1,4 @@
-import { apiClient } from '~/services/apiClient'
+import { apiClient } from '~/business/services/apiClient'
 
 async function doLogin(username: string, password: string) {
   const { data } = await apiClient.post('/autenticacao/login', {

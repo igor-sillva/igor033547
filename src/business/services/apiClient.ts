@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios'
 import { PET_API } from '~/app/config'
 import { authAtom, store } from '~/app/stores'
-import { AuthService } from '~/services/authService'
+import { AuthService } from '~/business/services/authService'
 
 export const apiClient = axios.create({
   baseURL: PET_API,
