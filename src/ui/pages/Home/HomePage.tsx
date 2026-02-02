@@ -1,6 +1,6 @@
 import React from 'react'
-import PetsPage from '~/modules/pets/pages/PetsPage'
-import TutorsPage from '~/modules/tutors/pages/TutorsPage'
+import PetsPage from '~/ui/pages/Pets/PetsPage'
+import TutorsPage from '~/ui/pages/Tutors/TutorsPage'
 import { TabItem, Tabs } from 'flowbite-react'
 
 const HomePage: React.FC = () => {

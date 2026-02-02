@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react'
 import { authAtom } from '~/app/stores/authAtom'
 import { useAtom } from 'jotai'
-import { AuthService } from '~/services/authService'
+import { AuthService } from '~/business/services/authService'
 import { PET_PASSWORD, PET_USERNAME } from '~/app/config'
 
 export const useAuthProvider = () => {

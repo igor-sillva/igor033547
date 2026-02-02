@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router'
 import DefaultLayout from '~/app/layouts/DefaultLayout'
-import HomePage from '~/modules/home/pages/HomePage'
+import HomePage from '~/ui/pages/Home/HomePage'
 
 const routes = createBrowserRouter([
   {
@@ -11,20 +11,11 @@ const routes = createBrowserRouter([
         element: <HomePage />
       },
       {
-        path: 'pets',
+        path: 'pets/:petId',
         lazy: {
           Component: async () =>
-            (await import('~/modules/pets/pages/PetsPage')).default
-        },
-        children: [
-          {
-            path: ':petId',
-            lazy: {
-              Component: async () =>
-                (await import('~/modules/pets/pages/DetailPetPage')).default
-            }
-          }
-        ]
+            (await import('~/ui/pages/Pets/DetailPetPage')).default
+        }
       }
     ],
     element: <DefaultLayout />
