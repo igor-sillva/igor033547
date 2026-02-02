@@ -24,7 +24,7 @@ async function createPet(petDto: CreatePetDto): Promise<PetDto> {
 }
 
 async function updatePet(petId: number, petDto: UpdatePetDto): Promise<PetDto> {
-  const { data } = await apiClient.put('/v1/pets', petDto)
+  const { data } = await apiClient.put(`/v1/pets/${petId}`, petDto)
   return data
 }
 
