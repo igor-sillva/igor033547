@@ -13,16 +13,13 @@ const routes = createBrowserRouter([
         path: 'pets',
         lazy: {
           Component: async () => (await import('~/ui/pages/pets/Pets')).default
-        },
-        children: [
-          {
-            path: ':petId',
-            lazy: {
-              Component: async () =>
-                (await import('~/ui/pages/pets/Detail')).default
-            }
-          }
-        ]
+        }
+      },
+      {
+        path: 'pets/:petId',
+        lazy: {
+          Component: async () => (await import('~/ui/pages/pets/Edit')).default
+        }
       },
       {
         path: 'tutores',

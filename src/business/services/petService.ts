@@ -33,7 +33,7 @@ async function removePet(petId: number): Promise<null> {
   return null
 }
 
-async function addPhoto(petId: number, file: Blob): Promise<PhotoDto> {
+async function addPhoto(petId: number, file: File): Promise<PhotoDto> {
   const formData = new FormData()
   formData.set('foto', file)
 

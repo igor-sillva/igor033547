@@ -10,7 +10,7 @@ import {
 const facade = createPetsFacade()
 
 export function usePets(query?: PetQueryDto) {
-  return useInfiniteQuery({
+  const { data, ...other } = useInfiniteQuery({
     queryKey: ['pets', query?.page, query],
     queryFn: ({ pageParam }) =>
       facade.getAllPets({
@@ -26,6 +26,10 @@ export function usePets(query?: PetQueryDto) {
       return lastPage.page + 1
     }
   })
+
+  const flatData = data?.pages?.flatMap((page) => page.content)
+
+  return { data: flatData, ...other }
 }
 
 export function usePet(id: number) {
@@ -56,7 +60,27 @@ export function useUpdatePet(id: number) {
     mutationKey: ['pet', id, 'update'],
     mutationFn: (dto: UpdatePetDto) => facade.updatePet(id, dto),
     onSuccess: () => {
-      queryClient.invalidateQueries(['pets'])
+      queryClient.invalidateQueries(['pets', id])
+    }
+  })
+}
+
+type UpdatePetAndChangePhotoVariables = {
+  oldPhotoId: number
+  newPhoto: File
+  dto: UpdatePetDto
+}
+export function useUpdatePetAndChangePhoto(id: number) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationKey: ['pet', id, 'update', 'w-photo'],
+    mutationFn: async (variables: UpdatePetAndChangePhotoVariables) => {
+      const { oldPhotoId, newPhoto, dto } = variables
+      await facade.updatePetWithPhoto(id, dto, oldPhotoId, newPhoto)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['pets', id])
     }
   })
 }
@@ -68,7 +92,19 @@ export function useRemovePet(id: number) {
     mutationKey: ['pet', id, 'remove'],
     mutationFn: () => facade.removePetWithId(id),
     onSuccess: () => {
-      queryClient.invalidateQueries(['pets'])
+      queryClient.invalidateQueries(['pets', id])
+    }
+  })
+}
+
+export function useAddPetImage(id: number) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationKey: ['pet', id, 'add-image'],
+    mutationFn: (file: Blob) => facade.addPetImage(id, file),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['pets', id])
     }
   })
 }
@@ -80,7 +116,7 @@ export function useRemovePetImage(id: number) {
     mutationKey: ['pet', id, 'remove-image'],
     mutationFn: (photoId: number) => facade.removePetImage(id, photoId),
     onSuccess: () => {
-      queryClient.invalidateQueries(['pets'])
+      queryClient.invalidateQueries(['pets', id])
     }
   })
 }

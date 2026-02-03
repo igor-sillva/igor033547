@@ -1,4 +1,4 @@
-import { PaginationQueryDto, PhotoDto } from '~/business/interfaces'
+import { PaginationQueryDto, PhotoDto, TutorDto } from '~/business/interfaces'
 
 export interface PetDto {
   id: number
@@ -6,6 +6,7 @@ export interface PetDto {
   raca: string
   idade: number
   foto: PhotoDto
+  tutores?: TutorDto[]
 }
 
 export interface PetQueryDto extends PaginationQueryDto {

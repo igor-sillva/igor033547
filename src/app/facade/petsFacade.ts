@@ -28,6 +28,20 @@ export const createPetsFacade = (service = PetService) => ({
     return service.updatePet(id, dto)
   },
 
+  async updatePetWithPhoto(
+    id: number,
+    dto: UpdatePetDto,
+    oldPhotoId?: number,
+    newPhoto?: File
+  ) {
+    const petUpdated = await service.updatePet(id, dto)
+    if (newPhoto) {
+      if (oldPhotoId) await service.removePhoto(id, oldPhotoId)
+      await service.addPhoto(id, newPhoto)
+    }
+    return petUpdated
+  },
+
   async updatePetName(id: number, newName: string) {
     return service.updatePet(id, { nome: newName })
   },
@@ -42,6 +56,10 @@ export const createPetsFacade = (service = PetService) => ({
 
   async removePetWithId(id: number) {
     return service.removePet(id)
+  },
+
+  async addPetImage(id: number, file: Blob) {
+    return service.addPhoto(id, file)
   },
 
   async removePetImage(id: number, photoId: number) {
