@@ -1,6 +1,5 @@
-import { createBrowserRouter } from 'react-router'
+import { createBrowserRouter, Navigate } from 'react-router'
 import DefaultLayout from '~/app/layouts/DefaultLayout'
-import HomePage from '~/ui/pages/Home/HomePage'
 
 const routes = createBrowserRouter([
   {
@@ -8,13 +7,28 @@ const routes = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <HomePage />
+        element: <Navigate to="pets" replace />
       },
       {
-        path: 'pets/:petId',
+        path: 'pets',
+        lazy: {
+          Component: async () => (await import('~/ui/pages/pets/Pets')).default
+        },
+        children: [
+          {
+            path: ':petId',
+            lazy: {
+              Component: async () =>
+                (await import('~/ui/pages/pets/Detail')).default
+            }
+          }
+        ]
+      },
+      {
+        path: 'tutores',
         lazy: {
           Component: async () =>
-            (await import('~/ui/pages/Pets/DetailPetPage')).default
+            (await import('~/ui/pages/tutors/TutorsPage')).default
         }
       }
     ],

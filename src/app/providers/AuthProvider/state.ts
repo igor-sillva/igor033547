@@ -19,7 +19,7 @@ export const useAuthProvider = () => {
   useEffect(() => {
     if (token.accessToken) return
 
-    doLogin().then(console.log)
+    doLogin().then(Boolean)
   }, [])
 
   return { token }

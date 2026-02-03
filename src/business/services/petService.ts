@@ -8,7 +8,7 @@ import {
   UpdatePetDto
 } from '~/business/interfaces'
 
-async function getPets(query: PetQueryDto): Promise<PagedResponseDto<PetDto>> {
+async function getPets(query?: PetQueryDto): Promise<PagedResponseDto<PetDto>> {
   const { data } = await apiClient.get('/v1/pets', { params: query })
   return data
 }
