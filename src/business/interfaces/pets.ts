@@ -18,6 +18,7 @@ export interface CreatePetDto {
   nome: string
   raca: string
   idade: number
+  foto?: File
 }
 
 export interface UpdatePetDto extends Partial<CreatePetDto> {}

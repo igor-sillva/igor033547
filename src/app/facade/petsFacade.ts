@@ -18,9 +18,10 @@ export const createPetsFacade = (service = PetService) => ({
     return service.getPet(id)
   },
 
-  async registerPetWithPhoto(dto: CreatePetDto, photo?: Blob) {
-    const pet = await service.createPet(dto)
-    if (photo) await service.addPhoto(pet.id, photo)
+  async registerPetWithPhoto(dto: CreatePetDto) {
+    const { foto, ...data } = dto
+    const pet = await service.createPet(data)
+    if (foto) await service.addPhoto(pet.id, foto)
     return pet
   },
 

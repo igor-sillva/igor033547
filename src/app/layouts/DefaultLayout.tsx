@@ -37,6 +37,22 @@ const DefaultLayout: React.FC = () => {
           >
             Tutores
           </NavbarLink>
+
+          <NavbarLink
+            as={Link}
+            to="/pets/registrar"
+            active={location.pathname.includes('pets/registrar')}
+          >
+            Registrar Pets
+          </NavbarLink>
+
+          <NavbarLink
+            as={Link}
+            to="/tutores/registrar"
+            active={location.pathname.includes('tutores/registrar')}
+          >
+            Registrar Tutores
+          </NavbarLink>
         </NavbarCollapse>
       </Navbar>
 

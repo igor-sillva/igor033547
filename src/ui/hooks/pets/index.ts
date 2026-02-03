@@ -45,8 +45,7 @@ export function useCreatePet() {
 
   return useMutation({
     mutationKey: ['pets', 'create'],
-    mutationFn: (dto: CreatePetDto, photo?: Blob) =>
-      facade.registerPetWithPhoto(dto, photo),
+    mutationFn: (dto: CreatePetDto) => facade.registerPetWithPhoto(dto),
     onSuccess: () => {
       queryClient.invalidateQueries(['pets'])
     }
@@ -93,6 +92,7 @@ export function useRemovePet(id: number) {
     mutationFn: () => facade.removePetWithId(id),
     onSuccess: () => {
       queryClient.invalidateQueries(['pets'])
+      queryClient.invalidateQueries(['pets', id])
     }
   })
 }
