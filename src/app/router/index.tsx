@@ -18,7 +18,7 @@ const routes = createBrowserRouter([
       {
         path: 'pets/:petId',
         lazy: {
-          Component: async () => (await import('~/ui/pages/pets/Edit')).default
+          Component: async () => (await import('~/ui/pages/pets/Pets')).default
         }
       },
       {

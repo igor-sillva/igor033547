@@ -1,16 +1,28 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { usePets } from '~/ui/hooks'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import CardLink from '~/ui/components/CardLink'
+import { Modal, ModalBody, ModalHeader } from 'flowbite-react'
+import { useMatch, useNavigate } from 'react-router'
+import Edit from '~/ui/pages/pets/Edit'
 
 const defaultImage =
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQM30N3zx-WuIif4TVsJ-2qy_8GTWfYWOiyTQ&s'
 
 const PetsPage: React.FC = () => {
+  const match = useMatch('/pets/:petId')
+  const [openEdit, setOpenEdit] = useState<boolean>(!!match)
+
   const { data, isLoading, isError, hasNextPage, fetchNextPage } = usePets({
     page: 0,
     size: 10
   })
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    setOpenEdit(!!match)
+  }, [match])
 
   if (isLoading) {
     return <div>Carregando pets...</div>
@@ -26,6 +38,10 @@ const PetsPage: React.FC = () => {
 
   const handleLoadMoreData = async () => {
     await fetchNextPage()
+  }
+
+  const navigateHome = () => {
+    navigate('/pets')
   }
 
   return (
@@ -58,6 +74,13 @@ const PetsPage: React.FC = () => {
           ))}
         </div>
       </InfiniteScroll>
+
+      {openEdit && (
+        <Modal dismissible show={openEdit} onClose={navigateHome}>
+          <ModalHeader>Pet #{match?.params.petId}</ModalHeader>
+          <Edit petId={match?.params.petId} />
+        </Modal>
+      )}
     </div>
   )
 }

@@ -92,7 +92,7 @@ export function useRemovePet(id: number) {
     mutationKey: ['pet', id, 'remove'],
     mutationFn: () => facade.removePetWithId(id),
     onSuccess: () => {
-      queryClient.invalidateQueries(['pets', id])
+      queryClient.invalidateQueries(['pets'])
     }
   })
 }

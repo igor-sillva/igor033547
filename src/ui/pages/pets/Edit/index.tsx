@@ -1,15 +1,14 @@
 import React from 'react'
-import { useNavigate, useParams } from 'react-router'
 import {
   useAddPetImage,
   usePet,
+  useRemovePet,
   useRemovePetImage,
-  useUpdatePet,
-  useUpdatePetAndChangePhoto
+  useUpdatePet
 } from '~/ui/hooks'
 import { useForm } from 'react-hook-form'
-import { Button, Card, FileInput, FloatingLabel, Label } from 'flowbite-react'
-import { CustomEvent } from 'happy-dom'
+import { Button, Card, FileInput, FloatingLabel } from 'flowbite-react'
+import { useNavigate } from 'react-router'
 
 interface PetForm {
   nome: string
@@ -17,18 +16,18 @@ interface PetForm {
   idade: number
 }
 
-interface PetImageForm {
-  foto: FileList
+type EditProps = {
+  petId: number
 }
 
-const Edit: React.FC = () => {
-  const { petId } = useParams()
-  const navigate = useNavigate()
-
+const Edit: React.FC<EditProps> = ({ petId }) => {
   const { data, isLoading, isError } = usePet(Number(petId))
   const updatePet = useUpdatePet(Number(petId))
+  const removePet = useRemovePet(Number(petId))
   const removePetImage = useRemovePetImage(Number(petId))
   const addPetImage = useAddPetImage(Number(petId))
+
+  const navigate = useNavigate()
 
   const petForm = useForm<PetForm>({
     values: {
@@ -39,31 +38,34 @@ const Edit: React.FC = () => {
   })
 
   if (isLoading) {
-    return <div>Carregando...</div>
+    return <p className="text-base">Carregando...</p>
   }
 
   if (isError) {
-    return <div>Erro ao carregar Pet</div>
+    return <p className="text-base">Erro ao carregar Pet</p>
   }
 
   if (!data) {
-    return <div>Nenhum dado recuperado</div>
+    return <p className="text-base">Nenhum dado recuperado</p>
   }
 
   const onSubmitPetForm = (formData: PetForm) => {
     updatePet.mutate(formData)
   }
 
+  const handleRemovePet = () => {
+    removePet.mutate()
+    navigate('/pets')
+  }
+
   const handleRemovePetImage = () => {
     removePetImage.mutate(data.foto.id)
   }
 
-  const handleUploadImage = (event: unknown) => {
-    const file = event.target.files
+  const handleUploadImage = (evt: unknown) => {
+    const file = evt.target.files
     addPetImage.mutate(file?.[0])
   }
-
-  const goBack = () => navigate('/pets')
 
   return (
     <form
@@ -125,8 +127,12 @@ const Edit: React.FC = () => {
         </div>
 
         <div className="flex justify-end gap-2 md:col-span-2">
-          <Button color="alternative" onClick={goBack}>
-            Cancelar
+          <Button
+            color="red"
+            disabled={removePet.isLoading}
+            onClick={handleRemovePet}
+          >
+            Deletar pet
           </Button>
 
           <Button type="submit" disabled={updatePet.isLoading}>
