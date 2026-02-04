@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, Outlet, useLocation } from 'react-router'
 import {
   Button,
@@ -8,15 +8,18 @@ import {
   NavbarToggle
 } from 'flowbite-react'
 import { HiOutlineSearch } from 'react-icons/hi'
+import GlobalSearchModal from '~/ui/pages/search/GlobalSearchModal'
 
 const DefaultLayout: React.FC = () => {
   const location = useLocation()
+
+  const [openGlobalSearch, setOpenGlobalSearch] = useState<boolean>(false)
 
   return (
     <div>
       <Navbar fluid>
         <div className="flex gap-2 md:order-2">
-          <Button color="alternative">
+          <Button color="alternative" onClick={() => setOpenGlobalSearch(true)}>
             <HiOutlineSearch className="mr-2 size-5" />
             Pesquisar
           </Button>
@@ -59,6 +62,11 @@ const DefaultLayout: React.FC = () => {
       <div>
         <Outlet />
       </div>
+
+      <GlobalSearchModal
+        show={openGlobalSearch}
+        onClose={() => setOpenGlobalSearch(false)}
+      />
     </div>
   )
 }
