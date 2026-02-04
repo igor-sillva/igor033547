@@ -7,13 +7,14 @@ import {
   useUpdatePet
 } from '~/ui/hooks'
 import { useForm } from 'react-hook-form'
-import { Button, Card, FileInput, FloatingLabel } from 'flowbite-react'
-import { useNavigate } from 'react-router'
+import { Avatar, Button, Card, FileInput, FloatingLabel } from 'flowbite-react'
+import { Link, useNavigate } from 'react-router'
+import { HiChevronRight } from 'react-icons/hi'
 
 interface PetForm {
-  nome: string
-  raca: string
-  idade: number
+  nome?: string
+  raca?: string
+  idade?: number
 }
 
 type EditProps = {
@@ -38,15 +39,27 @@ const Edit: React.FC<EditProps> = ({ petId }) => {
   })
 
   if (isLoading) {
-    return <p className="text-base">Carregando...</p>
+    return (
+      <p className="p-4 text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        Carregando...
+      </p>
+    )
   }
 
   if (isError) {
-    return <p className="text-base">Erro ao carregar Pet</p>
+    return (
+      <p className="p-4 text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        Erro ao carregar Pet
+      </p>
+    )
   }
 
   if (!data) {
-    return <p className="text-base">Nenhum dado recuperado</p>
+    return (
+      <p className="p-4 text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        Nenhum dado recuperado
+      </p>
+    )
   }
 
   const onSubmitPetForm = (formData: PetForm) => {
@@ -62,7 +75,7 @@ const Edit: React.FC<EditProps> = ({ petId }) => {
     removePetImage.mutate(data.foto.id)
   }
 
-  const handleUploadImage = (evt: unknown) => {
+  const handleUploadImage = (evt: any) => {
     const file = evt.target.files
     addPetImage.mutate(file?.[0])
   }
@@ -100,6 +113,49 @@ const Edit: React.FC<EditProps> = ({ petId }) => {
       </Card>
 
       <Card className="md:col-span-2">
+        <h2 className="text-xl font-semibold dark:text-white">Tutores</h2>
+
+        <div className="flow-root">
+          <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+            {data.tutores?.map((tutor) => (
+              <li className="py-3 sm:py-4" key={`tutor-${tutor.id}`}>
+                <Link to={`/tutores/${tutor.id}`}>
+                  <div className="flex items-center space-x-4">
+                    <div className="shrink-0">
+                      <Avatar
+                        img={tutor.foto?.url}
+                        placeholderInitials={
+                          !tutor.foto ? tutor.nome.charAt(0) : undefined
+                        }
+                        bordered
+                      />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
+                        {tutor.nome}
+                      </p>
+                      <p className="truncate text-sm text-gray-500 dark:text-gray-400">
+                        {tutor.email}
+                      </p>
+                    </div>
+                    <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                      <HiChevronRight />
+                    </div>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          {!data.tutores?.length && (
+            <p className="text-gray-900 dark:text-white">
+              Nenhum tutor responsável por <b>{data.nome}</b>
+            </p>
+          )}
+        </div>
+      </Card>
+
+      <Card className="md:col-span-2">
         <h2 className="text-xl font-semibold dark:text-white">Dados do Pet</h2>
         <div className="grid gap-4 md:grid-cols-3">
           <div>
@@ -125,21 +181,21 @@ const Edit: React.FC<EditProps> = ({ petId }) => {
             />
           </div>
         </div>
-
-        <div className="flex justify-end gap-2 md:col-span-2">
-          <Button
-            color="red"
-            disabled={removePet.isLoading}
-            onClick={handleRemovePet}
-          >
-            Deletar pet
-          </Button>
-
-          <Button type="submit" disabled={updatePet.isLoading}>
-            Salvar alterações
-          </Button>
-        </div>
       </Card>
+
+      <div className="flex justify-end gap-2 md:col-span-2">
+        <Button
+          color="red"
+          disabled={removePet.isLoading}
+          onClick={handleRemovePet}
+        >
+          Deletar pet
+        </Button>
+
+        <Button type="submit" disabled={updatePet.isLoading}>
+          Salvar alterações
+        </Button>
+      </div>
     </form>
   )
 }

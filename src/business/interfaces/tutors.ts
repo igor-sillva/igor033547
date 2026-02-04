@@ -21,6 +21,7 @@ export interface CreateTutorDto {
   email: string
   telefone: string
   endereco: string
+  foto?: File
 }
 
 export interface UpdateTutorDto extends Partial<CreateTutorDto> {}

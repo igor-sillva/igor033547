@@ -46,7 +46,7 @@ const DefaultLayout: React.FC = () => {
             to="/pets/registrar"
             active={location.pathname.includes('pets/registrar')}
           >
-            Registrar Pets
+            Registrar Pet
           </NavbarLink>
 
           <NavbarLink
@@ -54,7 +54,7 @@ const DefaultLayout: React.FC = () => {
             to="/tutores/registrar"
             active={location.pathname.includes('tutores/registrar')}
           >
-            Registrar Tutores
+            Registrar Tutor
           </NavbarLink>
         </NavbarCollapse>
       </Navbar>

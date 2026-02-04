@@ -9,6 +9,7 @@ type CardLinkProps = LinkProps & CardProps
 const CardLink: React.FC<CardLinkProps> = ({
   to,
   imgSrc,
+  horizontal,
   onClick,
   children
 }) => {
@@ -16,6 +17,7 @@ const CardLink: React.FC<CardLinkProps> = ({
     <Link className="card-link" to={to}>
       <Card
         className="card-with-image rounded-base"
+        horizontal={horizontal}
         renderImage={() => (
           <div
             className="card-image rounded-base h-auto max-w-full"

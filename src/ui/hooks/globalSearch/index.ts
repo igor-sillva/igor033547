@@ -1,4 +1,4 @@
-import { createGlobalSearchFacade } from '~/app/facade/searchFacade'
+import { createGlobalSearchFacade } from '~/app/facade'
 import { useQuery } from 'react-query'
 
 const facade = createGlobalSearchFacade()

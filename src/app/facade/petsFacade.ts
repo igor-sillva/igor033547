@@ -59,11 +59,19 @@ export const createPetsFacade = (service = PetService) => ({
     return service.removePet(id)
   },
 
-  async addPetImage(id: number, file: Blob) {
+  async addPetImage(id: number, file: File) {
     return service.addPhoto(id, file)
   },
 
   async removePetImage(id: number, photoId: number) {
     return service.removePhoto(id, photoId)
+  },
+
+  async addTutorToPet(id: number, tutorId: number) {
+    return service.addTutor(id, tutorId)
+  },
+
+  async removeTutorFromPet(id: number, tutorId: number) {
+    return service.removeTutor(id, tutorId)
   }
 })

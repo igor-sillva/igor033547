@@ -32,7 +32,7 @@ const routes = createBrowserRouter([
         path: 'tutores',
         lazy: {
           Component: async () =>
-            (await import('~/ui/pages/tutors/TutorsPage')).default
+            (await import('~/ui/pages/tutors/Tutors')).default
         }
       }
     ],

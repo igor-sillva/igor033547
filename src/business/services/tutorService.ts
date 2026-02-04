@@ -9,14 +9,14 @@ import {
 } from '~/business/interfaces'
 
 async function getTutors(
-  query: TutorQueryDto
+  query?: TutorQueryDto
 ): Promise<PagedResponseDto<TutorDto>> {
   const { data } = await apiClient.get('/v1/tutores', { params: query })
   return data
 }
 
-async function getTutor(petId: number): Promise<TutorDto> {
-  const { data } = await apiClient.get(`/v1/tutores/${petId}`)
+async function getTutor(tutorId: number): Promise<TutorDto> {
+  const { data } = await apiClient.get(`/v1/tutores/${tutorId}`)
   return data
 }
 
@@ -27,9 +27,9 @@ async function createTutor(tutorDto: CreateTutorDto): Promise<TutorDto> {
 
 async function updateTutor(
   tutorId: number,
-  petDto: UpdateTutorDto
+  tutorDto: UpdateTutorDto
 ): Promise<TutorDto> {
-  const { data } = await apiClient.put(`/v1/tutores/${tutorId}`, petDto)
+  const { data } = await apiClient.put(`/v1/tutores/${tutorId}`, tutorDto)
   return data
 }
 
@@ -38,7 +38,7 @@ async function removeTutor(tutorId: number): Promise<null> {
   return null
 }
 
-async function addPhoto(tutorId: number, file: Blob): Promise<PhotoDto> {
+async function addPhoto(tutorId: number, file: File): Promise<PhotoDto> {
   const formData = new FormData()
   formData.set('foto', file)
 

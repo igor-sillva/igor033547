@@ -1,4 +1,4 @@
-import { createPetsFacade } from '~/app/facade/petsFacade'
+import { createPetsFacade } from '~/app/facade'
 import { CreatePetDto, PetQueryDto, UpdatePetDto } from '~/business/interfaces'
 import {
   useInfiniteQuery,
@@ -102,7 +102,7 @@ export function useAddPetImage(id: number) {
 
   return useMutation({
     mutationKey: ['pet', id, 'add-image'],
-    mutationFn: (file: Blob) => facade.addPetImage(id, file),
+    mutationFn: (file: File) => facade.addPetImage(id, file),
     onSuccess: () => {
       queryClient.invalidateQueries(['pets', id])
     }
@@ -115,6 +115,30 @@ export function useRemovePetImage(id: number) {
   return useMutation({
     mutationKey: ['pet', id, 'remove-image'],
     mutationFn: (photoId: number) => facade.removePetImage(id, photoId),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['pets', id])
+    }
+  })
+}
+
+export function useAddTutorToPet(id: number) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationKey: ['pet', id, 'add-tutor'],
+    mutationFn: (petId: number) => facade.addTutorToPet(id, petId),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['pets', id])
+    }
+  })
+}
+
+export function useRemoveTutorFromPet(id: number) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationKey: ['pet', id, 'remove-tutor'],
+    mutationFn: (petId: number) => facade.removeTutorFromPet(id, petId),
     onSuccess: () => {
       queryClient.invalidateQueries(['pets', id])
     }

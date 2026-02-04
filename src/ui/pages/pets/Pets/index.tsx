@@ -78,7 +78,9 @@ const PetsPage: React.FC = () => {
       {openEdit && (
         <Modal dismissible show={openEdit} onClose={navigateHome}>
           <ModalHeader>Pet #{match?.params.petId}</ModalHeader>
-          <Edit petId={match?.params.petId} />
+          <ModalBody>
+            <Edit petId={match?.params.petId} />
+          </ModalBody>
         </Modal>
       )}
     </div>
