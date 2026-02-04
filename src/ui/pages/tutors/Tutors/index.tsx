@@ -1,18 +1,28 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTutors } from '~/ui/hooks'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { Avatar, Card } from 'flowbite-react'
-import { Link } from 'react-router'
+import { Link, useMatch, useNavigate } from 'react-router'
 import { HiChevronRight } from 'react-icons/hi'
+import Edit from '~/ui/pages/tutors/Edit'
 
 const defaultImage =
   'https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png?20170228190511'
 
 const Tutors: React.FC = () => {
+  const match = useMatch('/tutores/:tutorId')
+  const [openEdit, setOpenEdit] = useState<boolean>(!!match)
+
+  const navigate = useNavigate()
+
   const { data, isLoading, isError, hasNextPage, fetchNextPage } = useTutors({
     page: 0,
     size: 10
   })
+
+  useEffect(() => {
+    setOpenEdit(!!match)
+  }, [match])
 
   if (isLoading) {
     return <div>Carregando tutores...</div>
@@ -28,6 +38,10 @@ const Tutors: React.FC = () => {
 
   const handleLoadMoreData = async () => {
     await fetchNextPage()
+  }
+
+  const goHome = () => {
+    navigate('/tutores')
   }
 
   return (
@@ -73,6 +87,14 @@ const Tutors: React.FC = () => {
           </div>
         </InfiniteScroll>
       </Card>
+
+      {match?.params?.tutorId && (
+        <Edit
+          tutorId={Number(match.params.tutorId)}
+          show={openEdit}
+          onClose={goHome}
+        />
+      )}
     </div>
   )
 }

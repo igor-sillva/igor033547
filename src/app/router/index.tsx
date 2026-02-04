@@ -34,6 +34,13 @@ const routes = createBrowserRouter([
           Component: async () =>
             (await import('~/ui/pages/tutors/Tutors')).default
         }
+      },
+      {
+        path: 'tutores/:tutorId',
+        lazy: {
+          Component: async () =>
+            (await import('~/ui/pages/tutors/Tutors')).default
+        }
       }
     ],
     element: <DefaultLayout />
