@@ -60,16 +60,6 @@ async function removePhoto(tutorId: number, photoId: number): Promise<null> {
   return null
 }
 
-async function addPet(tutorId: number, petId: number): Promise<null> {
-  await apiClient.post(`/v1/tutores/${tutorId}/pets/${petId}`)
-  return null
-}
-
-async function removePet(tutorId: number, petId: number): Promise<null> {
-  await apiClient.delete(`/v1/tutores/${tutorId}/pets/${petId}`)
-  return null
-}
-
 export const TutorService = {
   getTutors,
   getTutor,
@@ -77,7 +67,5 @@ export const TutorService = {
   updateTutor,
   removeTutor,
   addPhoto,
-  removePhoto,
-  addPet,
-  removePet
+  removePhoto
 }

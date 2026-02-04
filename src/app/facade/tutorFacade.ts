@@ -35,13 +35,5 @@ export const createTutorFacade = (service = TutorService) => ({
 
   async removeTutorImage(id: number, photoId: number) {
     return service.removePhoto(id, photoId)
-  },
-
-  async addPetToTutor(id: number, petId: number) {
-    return service.addPet(id, petId)
-  },
-
-  async removePetFromTutor(id: number, petId: number) {
-    return service.removePet(id, petId)
   }
 })

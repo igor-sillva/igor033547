@@ -32,6 +32,14 @@ export function usePets(query?: PetQueryDto) {
   return { data: flatData, ...other }
 }
 
+export function useFilterPetsByName(value: string, size: number) {
+  return useQuery({
+    queryKey: ['pets', 'by-name', value],
+    queryFn: () => facade.getPetsWithName(value, { size }),
+    enabled: Boolean(value)
+  })
+}
+
 export function usePet(id: number) {
   return useQuery({
     queryKey: ['pets', id],
@@ -115,30 +123,6 @@ export function useRemovePetImage(id: number) {
   return useMutation({
     mutationKey: ['pet', id, 'remove-image'],
     mutationFn: (photoId: number) => facade.removePetImage(id, photoId),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['pets', id])
-    }
-  })
-}
-
-export function useAddTutorToPet(id: number) {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationKey: ['pet', id, 'add-tutor'],
-    mutationFn: (petId: number) => facade.addTutorToPet(id, petId),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['pets', id])
-    }
-  })
-}
-
-export function useRemoveTutorFromPet(id: number) {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationKey: ['pet', id, 'remove-tutor'],
-    mutationFn: (petId: number) => facade.removeTutorFromPet(id, petId),
     onSuccess: () => {
       queryClient.invalidateQueries(['pets', id])
     }

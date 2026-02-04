@@ -28,7 +28,6 @@ const GlobalSearchModal: React.FC<GlobalSearchModalProps> = (props) => {
       <ModalHeader>
         <div className="max-w-md">
           <TextInput
-            id="small"
             type="search"
             icon={HiSearch}
             sizing="sm"

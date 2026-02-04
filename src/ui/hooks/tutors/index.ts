@@ -104,27 +104,3 @@ export function useRemoveTutorImage(id: number) {
     }
   })
 }
-
-export function useAddPetToTutor(id: number) {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationKey: ['tutors', id, 'add-pet'],
-    mutationFn: (petId: number) => facade.addPetToTutor(id, petId),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['tutors', id])
-    }
-  })
-}
-
-export function useRemovePetFromTutor(id: number) {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationKey: ['tutors', id, 'remove-pet'],
-    mutationFn: (petId: number) => facade.removePetFromTutor(id, petId),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['tutors', id])
-    }
-  })
-}

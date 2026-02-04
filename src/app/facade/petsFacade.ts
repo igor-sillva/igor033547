@@ -1,4 +1,9 @@
-import { CreatePetDto, PetQueryDto, UpdatePetDto } from '~/business/interfaces'
+import {
+  CreatePetDto,
+  PaginationQueryDto,
+  PetQueryDto,
+  UpdatePetDto
+} from '~/business/interfaces'
 import { PetService } from '~/business/services'
 
 export const createPetsFacade = (service = PetService) => ({
@@ -6,12 +11,8 @@ export const createPetsFacade = (service = PetService) => ({
     return service.getPets(query)
   },
 
-  async getPetsWithRaca(race: string) {
-    return service.getPets({ raca: race })
-  },
-
-  async getPetsWithName(name: string) {
-    return service.getPets({ nome: name })
+  async getPetsWithName(name: string, pagination?: PaginationQueryDto) {
+    return service.getPets({ nome: name, ...pagination })
   },
 
   async getPetWithId(id: number) {
@@ -43,18 +44,6 @@ export const createPetsFacade = (service = PetService) => ({
     return petUpdated
   },
 
-  async updatePetName(id: number, newName: string) {
-    return service.updatePet(id, { nome: newName })
-  },
-
-  async updatePetRace(id: number, newRace: string) {
-    return service.updatePet(id, { raca: newRace })
-  },
-
-  async updatePetAge(id: number, newAge: number) {
-    return service.updatePet(id, { idade: newAge })
-  },
-
   async removePetWithId(id: number) {
     return service.removePet(id)
   },
@@ -65,13 +54,5 @@ export const createPetsFacade = (service = PetService) => ({
 
   async removePetImage(id: number, photoId: number) {
     return service.removePhoto(id, photoId)
-  },
-
-  async addTutorToPet(id: number, tutorId: number) {
-    return service.addTutor(id, tutorId)
-  },
-
-  async removeTutorFromPet(id: number, tutorId: number) {
-    return service.removeTutor(id, tutorId)
   }
 })
