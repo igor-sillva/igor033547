@@ -26,35 +26,19 @@ const DefaultLayout: React.FC = () => {
           <NavbarToggle />
         </div>
         <NavbarCollapse>
-          <NavbarLink
-            as={Link}
-            to="/pets"
-            active={location.pathname.includes('pets')}
-          >
-            Pets
+          <NavbarLink active={location.pathname.includes('pets')}>
+            <Link to="/pets">Pets</Link>
           </NavbarLink>
-          <NavbarLink
-            as={Link}
-            to="/tutores"
-            active={location.pathname.includes('tutores')}
-          >
-            Tutores
+          <NavbarLink active={location.pathname.includes('tutores')}>
+            <Link to="/tutores">Tutores</Link>
           </NavbarLink>
 
-          <NavbarLink
-            as={Link}
-            to="/pets/registrar"
-            active={location.pathname.includes('pets/registrar')}
-          >
-            Registrar Pet
+          <NavbarLink active={location.pathname.includes('pets/registrar')}>
+            <Link to="/pets/registrar">Registrar Pet</Link>
           </NavbarLink>
 
-          <NavbarLink
-            as={Link}
-            to="/tutores/registrar"
-            active={location.pathname.includes('tutores/registrar')}
-          >
-            Registrar Tutor
+          <NavbarLink active={location.pathname.includes('tutores/registrar')}>
+            <Link to="/tutores/registrar">Registrar Tutor</Link>
           </NavbarLink>
         </NavbarCollapse>
       </Navbar>

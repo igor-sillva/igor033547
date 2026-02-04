@@ -21,15 +21,24 @@ const schema = yup.object().shape({
   nome: yup.string().required(),
   cpf: yup
     .string()
-    .test('cpf', (value) => validateCPF(value))
+    .test('cpf', (value) => {
+      if (!value) return true
+      return validateCPF(value)
+    })
     .required(),
   email: yup
     .string()
-    .test('email', (value) => validateEmail(value))
+    .test('email', (value) => {
+      if (!value) return true
+      return validateEmail(value)
+    })
     .required(),
   telefone: yup
     .string()
-    .test('telefone', (value) => validatePhone(value))
+    .test('telefone', (value) => {
+      if (!value) return true
+      return validatePhone(value)
+    })
     .required(),
   endereco: yup.string().required(),
   foto: yup.mixed<FileList>().notRequired().default(null)

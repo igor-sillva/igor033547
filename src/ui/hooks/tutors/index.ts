@@ -64,6 +64,7 @@ export function useUpdateTutor(id: number) {
     mutationKey: ['pet', id, 'update'],
     mutationFn: (dto: UpdateTutorDto) => facade.updateTutor(id, dto),
     onSuccess: () => {
+      queryClient.invalidateQueries(['tutors'])
       queryClient.invalidateQueries(['tutors', id])
     }
   })
@@ -89,6 +90,7 @@ export function useAddTutorImage(id: number) {
     mutationKey: ['tutors', id, 'add-image'],
     mutationFn: (file: File) => facade.addTutorImage(id, file),
     onSuccess: () => {
+      queryClient.invalidateQueries(['tutors'])
       queryClient.invalidateQueries(['tutors', id])
     }
   })
@@ -101,6 +103,7 @@ export function useRemoveTutorImage(id: number) {
     mutationKey: ['tutors', id, 'remove-image'],
     mutationFn: (photoId: number) => facade.removeTutorImage(id, photoId),
     onSuccess: () => {
+      queryClient.invalidateQueries(['tutors'])
       queryClient.invalidateQueries(['tutors', id])
     }
   })
