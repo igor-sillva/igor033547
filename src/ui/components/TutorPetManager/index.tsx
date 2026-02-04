@@ -16,7 +16,7 @@ const TutorPetManager: React.FC<TutorPetManagerProps> = ({
 }) => {
   return (
     <div className="flex flex-col gap-2">
-      <SearchPet onSelect={onCreateLink} unselectedPets={pets} />
+      <SearchPet onSelect={onCreateLink} unselectablePets={pets} />
 
       <div className="flow-root">
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -57,7 +57,7 @@ const TutorPetManager: React.FC<TutorPetManagerProps> = ({
 
         {!pets.length && (
           <p className="text-gray-900 dark:text-white">
-            Tutor responsável por nenhum pet
+            Este tutor não é responsável por nenhum pet
           </p>
         )}
       </div>

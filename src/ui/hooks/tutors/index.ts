@@ -1,7 +1,7 @@
 import {
   CreateTutorDto,
   TutorQueryDto,
-  UpdatePetDto
+  UpdateTutorDto
 } from '~/business/interfaces'
 import {
   useInfiniteQuery,
@@ -28,7 +28,8 @@ export function useTutors(query?: TutorQueryDto) {
       if (totalLoaded === lastPage.total) return undefined
 
       return lastPage.page + 1
-    }
+    },
+    keepPreviousData: true
   })
 
   const flatData = data?.pages?.flatMap((page) => page.content)
@@ -61,7 +62,7 @@ export function useUpdateTutor(id: number) {
 
   return useMutation({
     mutationKey: ['pet', id, 'update'],
-    mutationFn: (dto: UpdatePetDto) => facade.updateTutor(id, dto),
+    mutationFn: (dto: UpdateTutorDto) => facade.updateTutor(id, dto),
     onSuccess: () => {
       queryClient.invalidateQueries(['tutors', id])
     }

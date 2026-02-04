@@ -8,9 +8,8 @@ import {
   useTutor,
   useUpdateTutor
 } from '~/ui/hooks'
-import { Link, useNavigate } from 'react-router'
+import { useNavigate } from 'react-router'
 import {
-  Avatar,
   Card,
   FileInput,
   FloatingLabel,
@@ -21,17 +20,38 @@ import {
   ModalHeader
 } from 'flowbite-react'
 import { useForm } from 'react-hook-form'
-import { HiChevronRight } from 'react-icons/hi'
 import TutorPetManager from '~/ui/components/TutorPetManager'
 import { PetDto } from '~/business/interfaces'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { validateCPF, validateEmail, validatePhone } from 'validations-br'
+import InputMask from 'react-input-mask'
+import { onlyNumbers } from '~/utils'
 
 interface TutorForm {
-  nome?: string
-  cpf?: string
-  email?: string
-  telefone?: string
-  endereco?: string
+  nome: string
+  cpf: string
+  email: string
+  telefone: string
+  endereco: string
 }
+
+const schema = yup.object().shape({
+  nome: yup.string().required(),
+  cpf: yup
+    .string()
+    .test('cpf', (value) => validateCPF(value))
+    .required(),
+  email: yup
+    .string()
+    .test('email', (value) => validateEmail(value))
+    .required(),
+  telefone: yup
+    .string()
+    .test('telefone', (value) => validatePhone(value))
+    .required(),
+  endereco: yup.string().required()
+})
 
 type EditProps = {
   tutorId: number
@@ -50,13 +70,15 @@ const Edit: React.FC<EditProps> = ({ tutorId, show, onClose }) => {
   const removeLinkWithPet = useRemoveLinkTutorAndPet(tutorId)
 
   const tutorForm = useForm<TutorForm>({
+    mode: 'all',
     values: {
-      nome: data?.nome,
-      cpf: data?.cpf,
-      email: data?.email,
-      telefone: data?.telefone,
-      endereco: data?.endereco
-    }
+      nome: String(data?.nome),
+      cpf: String(data?.cpf),
+      email: String(data?.email),
+      telefone: String(data?.telefone),
+      endereco: String(data?.endereco)
+    },
+    resolver: yupResolver(schema)
   })
 
   const handleRemoveTutor = () => {
@@ -65,7 +87,11 @@ const Edit: React.FC<EditProps> = ({ tutorId, show, onClose }) => {
   }
 
   const onSubmitTutorForm = (formData: TutorForm) => {
-    updateTutor.mutate(formData)
+    updateTutor.mutate({
+      ...formData,
+      cpf: onlyNumbers(formData.cpf),
+      telefone: onlyNumbers(formData.telefone)
+    })
   }
 
   const handleRemoveTutorImage = () => {
@@ -102,104 +128,135 @@ const Edit: React.FC<EditProps> = ({ tutorId, show, onClose }) => {
           </p>
         )}
 
-        {!data ? (
-          <p className="p-4 text-base leading-relaxed text-gray-500 dark:text-gray-400">
-            Nenhum dado recuperado
-          </p>
-        ) : (
-          <form
-            id="edit-tutor"
-            className="grid gap-6 p-4 md:grid-cols-2"
-            onSubmit={tutorForm.handleSubmit(onSubmitTutorForm)}
-          >
-            <Card className="md:col-span-2">
-              <h2 className="text-xl font-semibold dark:text-white">
-                Foto do Tutor
-              </h2>
-
-              <div>
-                {data?.foto ? (
-                  <img
-                    src={data?.foto.url}
-                    alt="pet"
-                    className="mb-2 h-32 rounded"
-                  />
-                ) : (
-                  <FileInput
-                    onChange={handleUploadTutorImage}
-                    disabled={addTutorImage.isLoading}
-                  />
-                )}
-              </div>
-
-              <div className="flex justify-start md:col-span-2">
-                {data?.foto && (
-                  <Button
-                    color="red"
-                    disabled={removeTutorImage.isLoading}
-                    onClick={handleRemoveTutorImage}
-                  >
-                    Remover imagem
-                  </Button>
-                )}
-              </div>
-            </Card>
-
-            <Card className="md:col-span-2">
-              <h2 className="text-xl font-semibold dark:text-white">Pets</h2>
-
-              <TutorPetManager
-                pets={data.pets || []}
-                onCreateLink={handleCreateLinkWithPet}
-                onRemoveLink={handleRemoveLinkWithPet}
-              />
-            </Card>
-
-            <Card className="md:col-span-2">
-              <h2 className="text-xl font-semibold dark:text-white">
-                Dados do Tutor
-              </h2>
-              <div className="grid grid-cols-1 gap-4">
-                <div>
-                  <FloatingLabel
-                    variant="outlined"
-                    label="Nome"
-                    {...tutorForm.register('nome', { required: true })}
-                  />
+        {data && (
+          <>
+            <h1 className="mb-6 text-4xl font-bold text-gray-900 dark:text-white">
+              {data.nome}
+            </h1>
+            <form
+              id="edit-tutor"
+              className="grid gap-6 md:grid-cols-2"
+              onSubmit={tutorForm.handleSubmit(onSubmitTutorForm)}
+            >
+              <Card className="md:col-span-1">
+                <h2 className="text-xl font-semibold dark:text-white">
+                  Dados do Tutor
+                </h2>
+                <div className="grid grid-cols-1 gap-4">
+                  <div>
+                    <FloatingLabel
+                      variant="outlined"
+                      label="Nome"
+                      {...tutorForm.register('nome', { required: true })}
+                      color={
+                        tutorForm.formState.errors.nome ? 'error' : 'default'
+                      }
+                    />
+                  </div>
+                  <div>
+                    <InputMask
+                      mask="999.999.999-99"
+                      {...tutorForm.register('cpf', { required: true })}
+                    >
+                      {(inputProps: any) => (
+                        <FloatingLabel
+                          {...inputProps}
+                          variant="outlined"
+                          label="CPF"
+                          color={
+                            tutorForm.formState.errors.cpf ? 'error' : 'default'
+                          }
+                        />
+                      )}
+                    </InputMask>
+                  </div>
+                  <div>
+                    <FloatingLabel
+                      variant="outlined"
+                      label="E-mail"
+                      type="email"
+                      {...tutorForm.register('email', { required: true })}
+                      color={
+                        tutorForm.formState.errors.email ? 'error' : 'default'
+                      }
+                    />
+                  </div>
+                  <div>
+                    <InputMask
+                      mask="(99) 99999-9999"
+                      {...tutorForm.register('telefone', { required: true })}
+                    >
+                      {(inputProps: any) => (
+                        <FloatingLabel
+                          {...inputProps}
+                          variant="outlined"
+                          label="Telefone"
+                          color={
+                            tutorForm.formState.errors.telefone
+                              ? 'error'
+                              : 'default'
+                          }
+                        />
+                      )}
+                    </InputMask>
+                  </div>
+                  <div>
+                    <FloatingLabel
+                      variant="outlined"
+                      label="Endereço"
+                      {...tutorForm.register('endereco', { required: true })}
+                      color={
+                        tutorForm.formState.errors.cpf ? 'error' : 'default'
+                      }
+                    />
+                  </div>
                 </div>
-                <div>
-                  <FloatingLabel
-                    variant="outlined"
-                    label="CPF"
-                    {...tutorForm.register('cpf', { required: true })}
-                  />
+              </Card>
+
+              <Card className="md:col-span-1">
+                <h2 className="text-center text-xl font-semibold dark:text-white">
+                  Foto do Tutor
+                </h2>
+
+                <div className="flex justify-center">
+                  {data?.foto ? (
+                    <img
+                      src={data?.foto.url}
+                      alt="pet"
+                      className="mb-2 h-32 rounded"
+                    />
+                  ) : (
+                    <FileInput
+                      onChange={handleUploadTutorImage}
+                      disabled={addTutorImage.isLoading}
+                    />
+                  )}
                 </div>
-                <div>
-                  <FloatingLabel
-                    variant="outlined"
-                    label="E-mail"
-                    type="email"
-                    {...tutorForm.register('email', { required: true })}
-                  />
+
+                <div className="flex justify-center">
+                  {data?.foto && (
+                    <Button
+                      color="red"
+                      disabled={removeTutorImage.isLoading}
+                      onClick={handleRemoveTutorImage}
+                    >
+                      Remover imagem
+                    </Button>
+                  )}
                 </div>
-                <div>
-                  <FloatingLabel
-                    variant="outlined"
-                    label="Telefone"
-                    type="tel"
-                    {...tutorForm.register('telefone', { required: true })}
-                  />
-                </div>
-                <div>
-                  <FloatingLabel
-                    variant="outlined"
-                    label="Endereço"
-                    {...tutorForm.register('endereco', { required: true })}
-                  />
-                </div>
-              </div>
-            </Card>
-          </form>
+              </Card>
+
+              <Card className="md:col-span-2">
+                <h2 className="text-xl font-semibold dark:text-white">Pets</h2>
+
+                <TutorPetManager
+                  pets={data.pets || []}
+                  onCreateLink={handleCreateLinkWithPet}
+                  onRemoveLink={handleRemoveLinkWithPet}
+                />
+              </Card>
+            </form>
+          </>
         )}
       </ModalBody>
 

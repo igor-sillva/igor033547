@@ -40,7 +40,7 @@ const PetsPage: React.FC = () => {
     await fetchNextPage()
   }
 
-  const navigateHome = () => {
+  const goHome = () => {
     navigate('/pets')
   }
 
@@ -75,13 +75,12 @@ const PetsPage: React.FC = () => {
         </div>
       </InfiniteScroll>
 
-      {openEdit && (
-        <Modal dismissible show={openEdit} onClose={navigateHome}>
-          <ModalHeader>Pet #{match?.params.petId}</ModalHeader>
-          <ModalBody>
-            <Edit petId={match?.params.petId} />
-          </ModalBody>
-        </Modal>
+      {match?.params.petId && (
+        <Edit
+          petId={Number(match?.params.petId)}
+          show={openEdit}
+          onClose={goHome}
+        />
       )}
     </div>
   )

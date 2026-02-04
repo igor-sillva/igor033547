@@ -17,7 +17,7 @@ type GlobalSearchModalProps = ModalProps
 const GlobalSearchModal: React.FC<GlobalSearchModalProps> = (props) => {
   const [value, setValue] = useState<string>('')
 
-  const { data, isLoading, isError } = useGlobalSearch(value)
+  const { data, isFetching, isError } = useGlobalSearch(value)
 
   const onChange = (evt: any) => {
     setValue(evt.target.value)
@@ -41,11 +41,20 @@ const GlobalSearchModal: React.FC<GlobalSearchModalProps> = (props) => {
       </ModalHeader>
       <ModalBody className="min-h-75">
         <div className="space-y-2">
-          {!data?.tutors.length && !data?.pets.length && !isLoading && (
+          {!value && (
             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              Nenhum resultado encontrado para "{value}"
+              Procure por <b className="text-white">pets</b> e{' '}
+              <b className="text-white">tutores</b> buscando por seus nomes
             </p>
           )}
+          {value &&
+            !data?.tutors.length &&
+            !data?.pets.length &&
+            !isFetching && (
+              <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                Nenhum resultado encontrado para "{value}"
+              </p>
+            )}
 
           {isError && (
             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">

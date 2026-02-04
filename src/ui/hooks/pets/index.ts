@@ -24,7 +24,8 @@ export function usePets(query?: PetQueryDto) {
       if (totalLoaded === lastPage.total) return undefined
 
       return lastPage.page + 1
-    }
+    },
+    keepPreviousData: true
   })
 
   const flatData = data?.pages?.flatMap((page) => page.content)

@@ -13,21 +13,23 @@ import { HiSearch } from 'react-icons/hi'
 
 type SearchPetProps = {
   onSelect: (pet: PetDto) => void
-  unselectedPets: PetDto[]
+  unselectablePets: PetDto[]
 }
 
-const SearchPet: React.FC<SearchPetProps> = ({ onSelect, unselectedPets }) => {
+const SearchPet: React.FC<SearchPetProps> = ({
+  onSelect,
+  unselectablePets
+}) => {
   const [value, setValue] = useState<string>('')
 
   const { data } = useFilterPetsByName(value, 5)
 
-  const results = (data?.content || []).filter((p) =>
-    unselectedPets.some((u) => u.id !== p.id)
+  const results = (data?.content || []).filter(
+    (p) => !unselectablePets.some((u) => u.id === p.id)
   )
 
   const handleOnSelect = (pet: PetDto) => {
     onSelect(pet)
-    setValue('')
   }
 
   return (

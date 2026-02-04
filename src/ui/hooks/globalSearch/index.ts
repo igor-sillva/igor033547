@@ -7,6 +7,7 @@ export function useGlobalSearch(value: string) {
   return useQuery({
     queryKey: ['global-search', value],
     queryFn: () => facade.globalSearch(value),
-    enabled: Boolean(value.trim())
+    enabled: Boolean(value.trim()),
+    keepPreviousData: true
   })
 }
