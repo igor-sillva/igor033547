@@ -1,13 +1,18 @@
-import { apiClient } from '~/business/services/apiClient'
 import { AuthResponseDto } from '~/business/interfaces'
+import axios from 'axios'
+import { PET_API, PET_PASSWORD, PET_USERNAME } from '~/app/config'
 
-async function doLogin(
-  username: string,
-  password: string
-): Promise<AuthResponseDto> {
+const apiClient = axios.create({
+  baseURL: PET_API,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+})
+
+async function doLogin(): Promise<AuthResponseDto> {
   const { data } = await apiClient.post('/autenticacao/login', {
-    username,
-    password
+    username: PET_USERNAME,
+    password: PET_PASSWORD
   })
 
   return data

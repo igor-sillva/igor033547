@@ -39,11 +39,13 @@ apiClient.interceptors.response.use(
     }
 
     try {
+      // const res = await AuthService.doLogin()
       const res = await AuthService.refreshToken(auth.refreshToken)
 
       store.set(authAtom, {
         accessToken: res.access_token,
-        refreshToken: res.refresh_token
+        refreshToken: res.refresh_token,
+        expiresIn: res.expires_in
       })
 
       originalRequest.headers!.Authorization = `Bearer ${res.access_token}`
@@ -52,7 +54,8 @@ apiClient.interceptors.response.use(
     } catch {
       store.set(authAtom, {
         accessToken: null,
-        refreshToken: null
+        refreshToken: null,
+        expiresIn: null
       })
 
       return Promise.reject(error)
