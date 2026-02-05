@@ -24,8 +24,6 @@ export default function Create() {
   const createPet = useCreatePet()
 
   const onSubmit = (data: PetForm) => {
-    if (!isValid) return
-
     const payload = {
       ...data,
       foto: data.foto?.[0]
@@ -48,7 +46,7 @@ export default function Create() {
           <div>
             <h5 className="text-md mb-4 font-semibold dark:text-white">Foto</h5>
 
-            <FileInput {...register('foto')} />
+            <FileInput {...register('foto')} accept="image/*" />
           </div>
 
           <div className="grid gap-4">
@@ -70,7 +68,7 @@ export default function Create() {
                 variant="outlined"
                 label="Raça"
                 {...register('raca', { required: true })}
-                color={errors.nome ? 'error' : 'default'}
+                color={errors.raca ? 'error' : 'default'}
               />
             </div>
 
@@ -80,7 +78,7 @@ export default function Create() {
                 label="Idade"
                 type="number"
                 {...register('idade', { required: true, valueAsNumber: true })}
-                color={errors.nome ? 'error' : 'default'}
+                color={errors.idade ? 'error' : 'default'}
               />
             </div>
           </div>

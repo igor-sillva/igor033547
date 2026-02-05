@@ -67,8 +67,6 @@ export default function Create() {
   const createTutor = useCreateTutor()
 
   const onSubmit = (data: TutorForm) => {
-    if (!isValid) return
-
     const payload = {
       ...data,
       cpf: onlyNumbers(data.cpf),
@@ -93,7 +91,7 @@ export default function Create() {
           <div>
             <h5 className="text-md mb-4 font-semibold dark:text-white">Foto</h5>
 
-            <FileInput {...register('foto')} />
+            <FileInput {...register('foto')} accept="image/*" />
           </div>
 
           <div className="grid gap-4">
