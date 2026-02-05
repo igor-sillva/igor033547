@@ -7,7 +7,7 @@ A aplicação implementa um cadastro público de pets, tutores e o relacionament
 ## Dados da inscrição
 - Candidato: Igor Michael Pereira da Silva
 - Vaga: Desenvolvedor Frontend
-- Stack principal: React 18, TypeScript, Vite, TailwindCSS
+- Stack principal: React 18, TypeScript, Vite, Vitest, TailwindCSS
 
 ## Motivações
 A arquitetura foi pensada com foco em separação clara de responsabilidades, baixo acoplamento entre UI, regras de negócio e infraestrutura.
@@ -23,7 +23,7 @@ que não ocorra comunicação direta entre UI e serviços de infraestrutura.
 
 A escolha das seguintes de bibliotecas também foi primordial para o cumprir esses objetivos:
 - Build: Vite (builds muito mais rápidos)
-- Gerenciamento de estado: Jotai (diminui complexidade)
+- Gerenciamento de estado: Jotai (diminui complexidade comparado com Redux)
 - Roteamento: React Router
 - Cache e Gerenciamento de dados: TanStack React Query
 - Formulários: React Hook Form e Yup para validações
@@ -50,7 +50,7 @@ cd igor033547
 ### Execução local
 ```bash
 npm install
-npm run dev
+npm run dev -- --port 8000
 ```
 
 ### Execução via Docker
@@ -60,3 +60,11 @@ docker run -p 8000:8000 igor033547
 ```
 
 Acesse: <https://localhost:8000>
+
+## Testes
+
+### Executando testes
+
+````bash
+npm run test
+````

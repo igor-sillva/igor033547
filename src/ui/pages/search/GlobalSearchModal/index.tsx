@@ -65,7 +65,7 @@ const GlobalSearchModal: React.FC<GlobalSearchModalProps> = (props) => {
           <ul className="divide-y divide-gray-200 dark:divide-gray-700">
             {data?.pets.map((pet) => (
               <li className="py-3 sm:py-4" key={`pet-${pet.id}`}>
-                <Link to={`/pets/${pet.id}`} onClick={() => props.onClose?.()}>
+                <Link to={`/pets/${pet.id}`}>
                   <div className="flex items-center space-x-4">
                     <div className="shrink-0">
                       <Avatar

@@ -158,6 +158,7 @@ const Edit: React.FC<EditProps> = ({ petId, show, onClose }) => {
                       onChange={handleUploadImage}
                       disabled={addPetImage.isLoading}
                       accept="image/*"
+                      data-testid="file-input"
                     />
                   )}
                 </div>

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { usePets } from '~/ui/hooks'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import CardLink from '~/ui/components/CardLink'
-import { Modal, ModalBody, ModalHeader } from 'flowbite-react'
 import { useMatch, useNavigate } from 'react-router'
 import Edit from '~/ui/pages/pets/Edit'
 

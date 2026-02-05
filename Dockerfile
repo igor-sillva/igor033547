@@ -11,4 +11,4 @@ RUN npm run build
 
 EXPOSE 8000
 
-CMD ["npm", "run", "serve", "--", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["npm", "run", "serve", "--", "--host", "--port", "8000"]

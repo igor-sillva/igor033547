@@ -5,7 +5,7 @@ export interface PetDto {
   nome: string
   raca: string
   idade: number
-  foto: PhotoDto
+  foto: PhotoDto | null
   tutores?: TutorDto[]
 }
 
